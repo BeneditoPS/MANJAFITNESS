@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block imagem %}
+{% endblock%}
+
+{% block conteudo %}
+<div class="container">
+    <h3 class="title">{{ titulo }}</h3>
+    <hr>
+    <form class="form" method="POST" action="">
+       
+        <div class="row">
+            <div class="col-md-2">
+    
+            </div>
+            <div class="col-md-8">
+                {% csrf_token %}
+
+                {{ form|crispy }}
+            </div>
+            <div class="col-md-2">
+
+            </div>
+        </div>
+        <hr>
+    <div class="row">
+        <div class="col-md-5">
+
+        </div>
+        <div class="col-md-5">
+
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-success" type="submit">salvar</button>
+        </div>
+    </div>
+    </form>
+</div>
+<br>
+    <br>
+    <br>
+{% endblock %}
