@@ -6,25 +6,36 @@
 {% endblock%}
 
 {% block conteudo %}
-<div class="container responsive">
+<div class="container bg-dark">
     <h3 class="title">{{ titulo }}</h3>
     <hr>
-        <table class="table table-striped table-hover table-condesed">
-            <tr>
-                <th>DATA DE MATRÍCULA</th>
-                <th>DOCUMENTO</th>
-                <th>NOME</th>
-                <th>DATA DE NASCIMENTO</th>
-                <th>ALTURA</th>
-                <th>PESO</th>
-                <th>CONTATO</th>
-                <th>ENDEREÇO</th>
-                <th>OPÇÕES</th>
-            </tr>
-            {% for Aluno in object_list %}
+    <a href="{% url 'aluno' %}" type="button" class="btn btn-info">
+        Exportar
+    </a>
+    <a href="{% url 'relatorio' %}" type="button" class="btn btn-info">
+        Ficha
+    </a>
+    <br>
+    <br>
+        <table class="table table-striped table-hover table-condesed table-dark" id="tabela">
+            <thead>
+                <tr>
+                    <th>DATA DE MATRÍCULA</th>
+                    <th>BI</th>
+                    <th>NOME</th>
+                    <th>DATA DE NASCIMENTO</th>
+                    <th>ALTURA</th>
+                    <th>PESO</th>
+                    <th>CONTATO</th>
+                    <th>ENDEREÇO</th>
+                    <th>OPÇÕES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for Aluno in object_list %}
             <tr>
                 <td>{{ Aluno.data_matricula }}</td>
-                <td>{{ Aluno.documento }}</td>
+                <td>{{ Aluno.bi }}</td>
                 <td>{{ Aluno.nome }}</td>
                 <td>{{ Aluno.data_nascimento }}</td>
                 <td>{{ Aluno.altura }}</td>
@@ -45,8 +56,9 @@
                 <td>
                     Sem conteúdo.
                 </td>
-            </tr>
+            </tr>          
             {% endfor %}
+            </tbody>
         </table>
         <hr>
         <div class="row">

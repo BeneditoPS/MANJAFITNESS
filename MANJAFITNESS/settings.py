@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-4k$&@$m%+$p33n+1)sj_vz2s6h!3162y7#f8#xehrto8(s1+r$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 CRISPY_TEMPLATE_PACK='bootstrap4'
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'cadastros.apps.CadastrosConfig',
     'crispy_forms',
     'crispy_bootstrap4',
+    
     
 ]
 

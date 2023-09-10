@@ -1,13 +1,201 @@
 from django.shortcuts import render
 from .models import Atividade, Provincia, Municipio, Bairro, Instrutor, Turma, Aluno, Equipa
 from django.urls import reverse_lazy
-from django.views.generic.list import ListView
+from django.views.generic import ListView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from braces.views import GroupRequiredMixin
 from django.shortcuts import get_object_or_404
+import pandas as pd
+import sqlite3
 
+#relatórios
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+from reportlab.platypus import SimpleDocTemplate
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus.tables import Table
+from reportlab.lib import colors
+from django.template.loader import render_to_string, get_template
 # Create your views here.
+
+from xhtml2pdf import pisa
+
+def ExcelAluno(request):
+
+    conn=sqlite3.connect('db.sqlite3')
+    comando_sql = 'select * from cadastros_aluno'
+    excel=pd.read_sql_query(comando_sql, conn)
+    excel.to_excel("documentos/aluno.xlsx")
+    excel.to_csv("documentos/aluno.csv")
+   
+    atividade = Aluno.objects.all()
+   
+    response = HttpResponse(content_type = "application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="ficha de inscrição.pdf"'
+    p = canvas.Canvas(response, pagesize=letter)
+    y = 600
+    
+    p.drawImage("static/Benedito.jpg", 280, 780, width=50, height=50)
+    p.drawCentredString(300, 750, "<<MAJAFITNESS>>")
+    p.drawCentredString(300, 730, "AQUI CUIDAMOS DA TUA SAÚDE")
+    
+    p.line(0, 700, 600, 700)
+
+    for i in atividade:
+        p.drawString(50, y, str(i))
+        y -=20
+
+    p.line(0, 100, 600, 100)
+
+    p.drawString(50, 80, "NIF: 007289988LA045")
+    p.drawString(50, 60, "CONTATO: 921 493 040 / 923 503 200")
+    p.drawString(50, 40, "ENDEREÇO: Cuanza Norte/Cazengo/Rua Direita Luanda Malange")
+
+    p.showPage()
+    p.save()
+    return response
+
+ 
+    
+
+def ExcelInstrutor(request):
+
+    conn=sqlite3.connect('db.sqlite3')
+    comando_sql = 'select * from cadastros_instrutor'
+    excel=pd.read_sql_query(comando_sql, conn)
+    excel.to_excel("documentos/instrutor.xlsx")
+    excel.to_csv("documentos/instrutor.csv")
+    
+    atividade = Instrutor.objects.all()
+   
+    response = HttpResponse(content_type = "application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="ficha de inscrição.pdf"'
+    p = canvas.Canvas(response, pagesize=letter)
+    y = 600
+    
+    p.drawImage("static/Benedito.jpg", 280, 780, width=50, height=50)
+    p.drawCentredString(300, 750, "<<MAJAFITNESS>>")
+    p.drawCentredString(300, 730, "AQUI CUIDAMOS DA TUA SAÚDE")
+    
+    p.line(0, 700, 600, 700)
+
+    for i in atividade:
+        p.drawString(50, y, str(i))
+        y -=20
+
+    p.line(0, 100, 600, 100)
+
+    p.drawString(50, 80, "NIF: 007289988LA045")
+    p.drawString(50, 60, "CONTATO: 921 493 040 / 923 503 200")
+    p.drawString(50, 40, "ENDEREÇO: Cuanza Norte/Cazengo/Rua Direita Luanda Malange")
+
+    p.showPage()
+    p.save()
+    return response
+
+def ExcelTurma(request):
+
+    conn=sqlite3.connect('db.sqlite3')
+    comando_sql = 'select * from cadastros_turma'
+    excel=pd.read_sql_query(comando_sql, conn)
+    excel.to_excel("documentos/turma.xlsx")
+    excel.to_csv("documentos/turma.csv")
+
+    atividade = Turma.objects.all()
+   
+    response = HttpResponse(content_type = "application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="ficha de inscrição.pdf"'
+    p = canvas.Canvas(response, pagesize=letter)
+    y = 600
+    
+    p.drawImage("static/Benedito.jpg", 280, 780, width=50, height=50)
+    p.drawCentredString(300, 750, "<<MAJAFITNESS>>")
+    p.drawCentredString(300, 730, "AQUI CUIDAMOS DA TUA SAÚDE")
+    
+    p.line(0, 700, 600, 700)
+
+    for i in atividade:
+        p.drawString(50, y, str(i))
+        y -=20
+
+    p.line(0, 100, 600, 100)
+
+    p.drawString(50, 80, "NIF: 007289988LA045")
+    p.drawString(50, 60, "CONTATO: 921 493 040 / 923 503 200")
+    p.drawString(50, 40, "ENDEREÇO: Cuanza Norte/Cazengo/Rua Direita Luanda Malange")
+
+    p.showPage()
+    p.save()
+    return response
+
+def ExcelEquipa(request):
+
+    conn=sqlite3.connect('db.sqlite3')
+    comando_sql = 'select * from cadastros_equipa'
+    excel=pd.read_sql_query(comando_sql, conn)
+    excel.to_excel("documentos/equipa.xlsx")
+    excel.to_csv("documentos/equipa.csv")
+        
+    atividade = Equipa.objects.all()
+   
+    response = HttpResponse(content_type = "application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="ficha de inscrição.pdf"'
+    p = canvas.Canvas(response, pagesize=letter)
+    y = 600
+    
+    p.drawImage("static/Benedito.jpg", 280, 780, width=50, height=50)
+    p.drawCentredString(300, 750, "<<MAJAFITNESS>>")
+    p.drawCentredString(300, 730, "AQUI CUIDAMOS DA TUA SAÚDE")
+    
+    p.line(0, 700, 600, 700)
+
+    for i in atividade:
+        p.drawString(50, y, str(i))
+        y -=20
+
+    p.line(0, 100, 600, 100)
+
+    p.drawString(50, 80, "NIF: 007289988LA045")
+    p.drawString(50, 60, "CONTATO: 921 493 040 / 923 503 200")
+    p.drawString(50, 40, "ENDEREÇO: Cuanza Norte/Cazengo/Rua Direita Luanda Malange")
+
+    p.showPage()
+    p.save()
+    return response
+
+#RELATÓRIOS
+def RetatorioView(request):
+    response = HttpResponse(content_type = "aplication/n")
+    response["Content-Disposition"] = 'attachment; filename="ficha de inscrição.pdf"'
+
+    p = canvas.Canvas(response)
+    p.drawImage("static/Benedito.jpg", 280, 780, width=50, height=50)
+    p.drawCentredString(300, 750, "<<MAJAFITNESS>>")
+    p.drawCentredString(300, 730, "AQUI CUIDAMOS DA TUA SAÚDE")
+    
+    p.line(0, 700, 600, 700)
+
+    p.drawString(50, 600, "NÚMERO DE MATRÍCULA:")
+    p.drawString(50, 550, "BI:")
+    p.drawString(50, 500, "NOME COMPLETO:")
+    p.drawString(50, 450, "DATA DE NASCIMENTO:")
+    p.drawString(50, 400, "ALTURA:")
+    p.drawString(50, 350, "PESO:")
+    p.drawString(50, 300, "CONTATO PRÍNCIPAL:")
+    p.drawString(50, 250, "CONTATO ALTERNATIVO:")
+    p.drawString(50, 210, "ENDEREÇO:")
+
+    p.line(0, 100, 600, 100)
+
+    p.drawString(50, 80, "NIF: 007289988LA045")
+    p.drawString(50, 60, "CONTATO: 921 493 040 / 923 503 200")
+    p.drawString(50, 40, "ENDEREÇO: Cuanza Norte/Cazengo/Rua Direita Luanda Malange")
+
+    p.showPage()
+    p.save()
+    
+    return response
 
 #ATIVIDADE
 
@@ -23,8 +211,7 @@ class AtividadeCadastrar(GroupRequiredMixin, LoginRequiredMixin, CreateView):
         context = super().get_context_data(*args, **kwargs)
         context["titulo"] = "Cadastar Atividade"
         return context
-
-
+    
 class AtividadeListar(GroupRequiredMixin, LoginRequiredMixin, ListView):
     model = Atividade
     template_name="listarAtividade.html"
@@ -135,7 +322,7 @@ class MunicipioListar(GroupRequiredMixin, LoginRequiredMixin, ListView):
 
 class MunicipioEditar(GroupRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Municipio
-    fields = ['nome','provicia']
+    fields = ['nome','provincia']
     success_url = reverse_lazy("listar-municipio")
     template_name = "cadastrar.html"
     group_required = u"admin"
@@ -159,7 +346,7 @@ class MunicipioExcluir(GroupRequiredMixin, LoginRequiredMixin, DeleteView):
 #BAIRRO
 class BairroCadastrar(GroupRequiredMixin, LoginRequiredMixin, CreateView):
     model = Bairro
-    fields = ['nome','municipio','provincia']
+    fields = ['nome','municipio']
     template_name="cadastrar.html"
     success_url = reverse_lazy("listar-bairro")
     group_required = u"admin"
@@ -183,7 +370,7 @@ class BairroListar(GroupRequiredMixin, LoginRequiredMixin, ListView):
 
 class BairroEditar(GroupRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Bairro
-    fields = ['nome','municipio','provincia']
+    fields = ['nome','municipio']
     success_url = reverse_lazy("listar-bairro")
     template_name = "cadastrar.html"
     group_required = u"admin"
@@ -207,7 +394,7 @@ class BairroExcluir(GroupRequiredMixin, LoginRequiredMixin, DeleteView):
 #INSTRUTOR
 class InstrutorCadastrar(GroupRequiredMixin, LoginRequiredMixin, CreateView):
     model = Instrutor
-    fields = ['nome', 'documento', 'data_nascimento', 'titulo', 'contato1', 'contato2', 'endereco']
+    fields = ['nome', 'bi', 'data_nascimento', 'titulo', 'contato1', 'contato2', 'endereco']
     template_name="cadastrar.html"
     success_url = reverse_lazy("listar-instrutor")
     group_required = u"admin"
@@ -226,12 +413,12 @@ class InstrutorListar(GroupRequiredMixin, LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["titulo"] = "Listar Instrutor"
+        context["titulo"] = "Lista de Instrutores"
         return context
 
 class InstrutorEditar(GroupRequiredMixin, LoginRequiredMixin, UpdateView):
-    model = Bairro
-    fields = ['nome', 'documento', 'data_nascimento', 'titulo', 'contato1', 'contato2', 'endereco']
+    model = Instrutor
+    fields = ['nome', 'bi', 'data_nascimento', 'titulo', 'contato1', 'endereco']
     success_url = reverse_lazy("listar-instrutor")
     template_name = "cadastrar.html"
     group_required = u"admin"
@@ -275,7 +462,7 @@ class TurmaListar(GroupRequiredMixin, LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["titulo"] = "Listar Turma"
+        context["titulo"] = "Lista de Turmas"
         return context
 
 class TurmaEditar(GroupRequiredMixin, LoginRequiredMixin, UpdateView):
@@ -304,7 +491,7 @@ class TurmaExcluir(GroupRequiredMixin, LoginRequiredMixin, DeleteView):
 #ALUNO
 class AlunoCadastrar(GroupRequiredMixin, LoginRequiredMixin, CreateView):
     model = Aluno
-    fields = ['nome', 'documento', 'data_nascimento', 'altura', 'peso', 'contato1', 'contato2', 'endereco']
+    fields = ['nome', 'bi', 'data_nascimento', 'altura', 'peso', 'contato1', 'contato2', 'endereco']
     template_name="cadastrar.html"
     success_url = reverse_lazy("listar-aluno")
     group_required = u"admin"
@@ -323,12 +510,12 @@ class AlunoListar(GroupRequiredMixin, LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["titulo"] = "Listar Aluno"
+        context["titulo"] = "Lista de Alunos"
         return context
 
 class AlunoEditar(GroupRequiredMixin, LoginRequiredMixin, UpdateView):
     model = Aluno
-    fields = ['nome', 'documento', 'data_nascimento', 'altura', 'peso', 'contato1', 'contato2', 'endereco']
+    fields = ['nome', 'bi', 'data_nascimento', 'altura', 'peso', 'contato1', 'contato2', 'endereco']
     success_url = reverse_lazy("listar-aluno")
     template_name = "cadastrar.html"
     group_required = u"admin"
@@ -360,7 +547,7 @@ class EquipaCadastrar(GroupRequiredMixin, LoginRequiredMixin, CreateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["titulo"] = "Cadastar Equipa"
+        context["titulo"] = "Cadastar Equipa de Treino"
         return context
 
 
@@ -371,7 +558,7 @@ class EquipaListar(GroupRequiredMixin, LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["titulo"] = "Listar Equipa"
+        context["titulo"] = "Lista de Equipas de Treino"
         return context
 
 class EquipaEditar(GroupRequiredMixin, LoginRequiredMixin, UpdateView):
@@ -383,7 +570,7 @@ class EquipaEditar(GroupRequiredMixin, LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["titulo"] = "Editar Equipa"
+        context["titulo"] = "Editar Equipa de Treino"
         return context
 
 class EquipaExcluir(GroupRequiredMixin, LoginRequiredMixin, DeleteView):
@@ -394,5 +581,5 @@ class EquipaExcluir(GroupRequiredMixin, LoginRequiredMixin, DeleteView):
     
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["titulo"] = "Excluir Equipa"
+        context["titulo"] = "Excluir Equipa de Treino"
         return context

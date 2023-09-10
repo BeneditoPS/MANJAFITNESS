@@ -7,34 +7,43 @@
 
 
 {% block conteudo %}
-<div class="container responsive">
+<div class="container bg-dark">
     <h3 class="title">{{ titulo }}</h3>
     <hr>
-        <table class="table table-striped table-hover table-condesed">
-            <tr>
-                <th>TURMA</th>
-                <th>ALUNO</th>
-                <th>OPÇÕES</th>
-            </tr>
-            {% for Equipa in object_list %}
-            <tr>
-                <td>{{ Equipa.turma }}</td>
-                <td>{{ Equipa.aluno }}</td>
-                <td>
-                    <a href="{% url 'editar-equipa' Equipa.pk %}" class="btn btn-warning btn-sm" data-toggle="tooltip" title="Editar">
-                        <i class="fa fa-edit"></i>
-                    </a>    
-                    <a href="{% url 'excluir-equipa' Equipa.pk %}" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Excluir">
-                        <i class="fa fa-trash"></i>
-                    </a> 
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td>
-                    Sem conteúdo.
-                </td>
-            </tr>
+    <a href="{% url 'equipa' %}" type="button" class="btn btn-info">
+        Exportar (Excel & CSV)
+    </a>
+    <br>
+    <br>
+        <table class="table table-striped table-hover table-condesed" id="tabela">
+            <thead>
+                <tr>
+                    <th>TURMA</th>
+                    <th>ALUNO</th>
+                    <th>OPÇÕES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for Equipa in object_list %}
+                <tr>
+                    <td>{{ Equipa.turma }}</td>
+                    <td>{{ Equipa.aluno }}</td>
+                    <td>
+                        <a href="{% url 'editar-equipa' Equipa.pk %}" class="btn btn-warning btn-sm" data-toggle="tooltip" title="Editar">
+                            <i class="fa fa-edit"></i>
+                        </a>    
+                        <a href="{% url 'excluir-equipa' Equipa.pk %}" class="btn btn-danger btn-sm" data-toggle="tooltip" title="Excluir">
+                            <i class="fa fa-trash"></i>
+                        </a> 
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td>
+                        Sem conteúdo.
+                    </td>
+                </tr>
+            </tbody>
             {% endfor %}
         </table>
         <hr>

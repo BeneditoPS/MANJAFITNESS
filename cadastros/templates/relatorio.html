@@ -1,0 +1,22 @@
+
+{% load static %}
+
+<div class="container bg-dark">
+    <h3 class="title">{{ titulo }}</h3>
+    <hr>
+        <table class="table table-striped table-hover table-condesed bg-dark" id="tabela">
+            <thead>
+                <tr>
+                    <th>ATIVIDADE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for Atividade in object_list %}
+                <tr>
+                    <td>{{ Atividade.nome }}</td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>

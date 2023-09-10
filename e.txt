@@ -1,0 +1,73 @@
+import tempfile
+from django.template.loader import render_to_string
+import weasyprint
+
+def export_pdf(request):
+    atividade = Atividade.objects.all()
+
+    html_index = render_to_string('relatorio.html', {'nome':atividade})
+
+    weasyprint_html = weasyprint.HTML(string=html_index, base_url='http://127.0.0.1:8000/relatorio1')
+
+    pdf = weasyprint_html.write_pdf(stylesheets=[weasyprint.CSS(string='body { font-family: serif}')])
+
+    response = HttpResponse(content_type = 'application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=Relatório'+str(datetime.datetime.now())+'.pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
+
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(pdf)
+        output.flush()
+        output.seek(0)
+        response.write(output.read())
+    return response
+
+
+
+
+
+def pdf(request):
+    atividade = Turma.objects.all()
+   
+    response = HttpResponse(content_type = "application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="ficha de inscrição.pdf"'
+    p = canvas.Canvas(response, pagesize=letter)
+    y = 600
+    
+    p.drawImage("static/Benedito.jpg", 280, 780, width=50, height=50)
+    p.drawCentredString(300, 750, "<<MAJAFITNESS>>")
+    p.drawCentredString(300, 730, "AQUI CUIDAMOS DA TUA SAÚDE")
+    
+    p.line(0, 700, 600, 700)
+
+    for i in atividade:
+        p.drawString(50, y, str(i))
+        y -=20
+
+    p.line(0, 100, 600, 100)
+
+    p.drawString(50, 80, "NIF: 007289988LA045")
+    p.drawString(50, 60, "CONTATO: 921 493 040 / 923 503 200")
+    p.drawString(50, 40, "ENDEREÇO: Cuanza Norte/Cazengo/Rua Direita Luanda Malange")
+
+    p.showPage()
+    p.save()
+    return response
+
+
+
+def pdf(resquest):
+    atividade=Atividade.objects.all()
+    dados={
+        'titulo': atividade,
+    }
+
+    template=get_template('relatorio.html')
+    html=template.render(dados)
+    response = HttpResponse(content_type = "aplication/n")
+    response["Content-Disposition"] = 'attachment; filename="ficha de inscrição.pdf"'
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse("Ocorreu um erro")
+    return response

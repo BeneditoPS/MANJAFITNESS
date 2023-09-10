@@ -7,8 +7,17 @@ from .views import InstrutorCadastrar, InstrutorListar, InstrutorEditar, Instrut
 from .views import TurmaCadastrar, TurmaListar, TurmaEditar, TurmaExcluir
 from .views import AlunoCadastrar, AlunoListar, AlunoEditar, AlunoExcluir
 from .views import EquipaCadastrar, EquipaListar, EquipaEditar, EquipaExcluir
+from .views import RetatorioView, ExcelAluno, ExcelEquipa, ExcelInstrutor, ExcelTurma
 
 urlpatterns=[
+    
+    #Relatório
+    path("relatorio", RetatorioView, name="relatorio"),
+    path("aluno", ExcelAluno, name="aluno"),
+    path("instrutor", ExcelInstrutor, name="instrutor"),
+    path("turma", ExcelTurma, name="turma"),
+    path("equipa", ExcelEquipa, name="equipa"),
+
     #ATIVIDADE
     path("cadastrar/atividade", AtividadeCadastrar.as_view(), name="cadastrar-atividade"),
 
